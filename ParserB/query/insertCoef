@@ -1,0 +1,1 @@
+insert ignore into coef (flashscore_match_id,home_win,draw,away_win,provider) values ('{flashscore_id}',{homeW},{draw},{awayW},'{provider}')

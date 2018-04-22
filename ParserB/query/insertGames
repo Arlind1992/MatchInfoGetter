@@ -1,0 +1,2 @@
+INSERT ignore INTO games (home, away, flashscore_match_id, date)
+VALUES ('{home}', '{away}', '{flashscore_id}', '{date}');

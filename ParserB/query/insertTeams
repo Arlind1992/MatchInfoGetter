@@ -1,0 +1,1 @@
+insert ignore into teams (flashscore_team_id, name) values ('{flashscore_team_id}','{name}')

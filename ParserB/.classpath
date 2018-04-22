@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="externalLib/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="externalLib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="externalLib/fluent-hc-4.5.5.jar"/>
+	<classpathentry kind="lib" path="externalLib/httpclient-4.5.5.jar"/>
+	<classpathentry kind="lib" path="externalLib/httpclient-cache-4.5.5.jar"/>
+	<classpathentry kind="lib" path="externalLib/httpclient-win-4.5.5.jar"/>
+	<classpathentry kind="lib" path="externalLib/httpcore-4.4.9.jar"/>
+	<classpathentry kind="lib" path="externalLib/httpmime-4.5.5.jar"/>
+	<classpathentry kind="lib" path="externalLib/jna-4.4.0.jar"/>
+	<classpathentry kind="lib" path="externalLib/jna-platform-4.4.0.jar"/>
+	<classpathentry kind="lib" path="externalLib/mysql-connector-java-5.1.45-bin.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

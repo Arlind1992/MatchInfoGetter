@@ -1,0 +1,3 @@
+UPDATE teams
+SET competition = '{competition}'
+WHERE flashscore_team_id='{flashscore_team_id}';
