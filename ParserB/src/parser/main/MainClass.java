@@ -14,6 +14,7 @@ import org.w3c.dom.Element;
 
 import db.DbConnector;
 import db.base.Coef;
+import db.base.Competition;
 import db.base.GameResults;
 import db.base.Games;
 import db.base.Teams;
@@ -28,22 +29,25 @@ public class MainClass {
 	public static void main(String [ ] args) {
 		Element e=null;
 		try {
-			int day=1;
-			Date d=null;//getDate(day);
+			
+			//String[] st=InfoFlashscoreGetter.getCompInfo("france", "ligue-1");
+			//System.out.println("id-"+ st[0]+" st- "+st[1]);
+			/*int day=-1;
 			//parse by day
-			/*
 			Date d=getDate(day);
 			String toParse=InfoFlashscoreGetter.getAllGames(day);
 			insertGamesInDb(toParse,d);
-			*/
+			System.out.println("Date : "+new SimpleDateFormat("yyyy-MM-dd").format(d) );
 			//parse by team
+			*/
+			Date d=null;//getDate(day);
 			List<Teams>all= DBInfoGetter.getAllTeams();
 			boolean con=false;
 			for(Teams t:all) {
-				if(t.getName().equals("veria"))
+				if(t.getName().equals("crewe"))
 					con=true;
 				if(con) {
-					Thread.sleep(40000);
+					Thread.sleep(60000);
 					String toParse=InfoFlashscoreGetter.getInfoPerTeam( t.getFlashscore_team_id(),t.getName());
 					insertGamesInDb(toParse,d);
 				}
@@ -82,10 +86,11 @@ public class MainClass {
 			String[] teamIds=ResultParser.getMatchId(InfoFlashscoreGetter.getMatchHtml(m.getFlashId()));
 			Teams homeTeam=new Teams(teamIds[0],m.getHomeTeam(),m.getCompetition());
 			Teams awayTeam=new Teams(teamIds[1],m.getAwayTeam(),m.getCompetition());
-			homeTeam.insertIntoDB();
+			//needed only if new teams available
+			/*homeTeam.insertIntoDB();
 			homeTeam.updateCompetition();
 			awayTeam.insertIntoDB();
-			awayTeam.updateCompetition();
+			awayTeam.updateCompetition();*/
 			if(d!=null) {
 				new Games(m.getFlashId(),homeTeam.getFlashscore_team_id(),awayTeam.getFlashscore_team_id(),df.format(d)).insertIntoDB();;
 			}else {
@@ -102,6 +107,22 @@ public class MainClass {
 			System.out.println("ID: "+m.getFlashId()+" homeT: "+m.getHomeTeam()+" awayT: "+ m.getAwayTeam() 
 			+ " 1-"+mCoef.getHomeW() +" x-"+mCoef.getDraw() +" 2-"+ mCoef.getAwayW()
 			);
+		}
+	}
+	public static void updateCompInfo() throws ClassNotFoundException, FileNotFoundException, SQLException {
+		for(String champ:DBInfoGetter.getChampionships()) {
+			String[] sp=champ.split(":");
+			String nation=sp[0].toLowerCase();
+			String[] leag=sp[1].trim().split(" ");
+			String league="";
+			if(leag.length==1) {
+				league=leag[0];
+			}else {
+				league=(leag[0]+"-"+leag[1]).replace(".", "").toLowerCase();
+			}
+			String[] st=InfoFlashscoreGetter.getCompInfo(nation, league);
+			System.out.println("id-"+ st[0]+" st- "+st[1]);
+			new Competition(champ,st[0],st[1]).insertTournamentIdAndStage();;
 		}
 	}
 	

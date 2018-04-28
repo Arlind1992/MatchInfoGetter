@@ -97,7 +97,7 @@ public  class  InfoFlashscoreGetter {
 			URL url = new URL(myURL);
 			urlConn = url.openConnection();
 			if (urlConn != null)
-				urlConn.setReadTimeout(60 * 1000);
+				urlConn.setReadTimeout(2*60 * 1000);
 			if (urlConn != null && urlConn.getInputStream() != null) {
 				in = new InputStreamReader(urlConn.getInputStream(),
 						"UTF-8");
@@ -124,6 +124,14 @@ public  class  InfoFlashscoreGetter {
 		toReturn=toReturn.substring(0,toReturn.indexOf("</div>"));
 		return toReturn;
 	}
-	
+	public static String[] getCompInfo(String nation,String league) {
+		String htmlComp=callURL("https://www.flashscore.com/football/"+nation+"/"+league+"/");
+		String[] toReturn=new String[2];
+		int indexOfTor=htmlComp.indexOf("\"tournament\":");
+		toReturn[0]=htmlComp.substring(indexOfTor+"\"tournament\":".length()+1,indexOfTor+"\"tournament\":".length()+9 );
+		int indexOfTorSt=htmlComp.indexOf("\"tournamentStage\":");
+		toReturn[1]=htmlComp.substring(indexOfTorSt+"\"tournamentStage\":".length()+1,indexOfTorSt+"\"tournamentStage\":".length()+9 );
+		return toReturn;		
+	}
 	
 }

@@ -1,0 +1,3 @@
+UPDATE competitions
+SET tournamentId = '{tournamentId}', tournamentStage = '{tournamentStage}'
+WHERE competition='{competition}';

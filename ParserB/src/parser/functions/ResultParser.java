@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Set;
 
 import db.base.Coef;
+import db.info.getters.DBInfoGetter;
 import db.query.executor.QueryExecutor;
 import parser.data.Match;
 
 public class ResultParser {
-	private static Set<String> championships;
 	
 	public static List<Match> getMatchesByChampionships(String toParse){
 		List<Match> toReturn=new ArrayList<Match>();
@@ -23,7 +23,7 @@ public class ResultParser {
 			int indexTocheck=check.indexOf("¬");
 			if(indexTocheck>6 ) {
 				String champToCheck=check.substring(0,indexTocheck);
-				if(getChampionships().contains(champToCheck)) {	
+				if(DBInfoGetter.getChampionships().contains(champToCheck)) {	
 					toReturn.addAll(getMatches(check,champToCheck));
 				}
 			}
@@ -103,26 +103,7 @@ public class ResultParser {
 	}
 	
 	
-	public static Set<String> getChampionships() {
-		if(championships!=null)
-			return championships;
-		championships=new HashSet<String>();
-		ResultSet comp=null;
-		try {
-			comp=QueryExecutor.excecuteQuery("getCompetitions", null);
-		} catch (ClassNotFoundException | FileNotFoundException | SQLException e) {
-			System.out.println("There was a problem with getting the competitions, e: "+e);
-		}
-		try {
-			while(comp.next()){
-				String cToAdd = comp.getString("competition");
-				championships.add(cToAdd);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return championships;
-	}
+	
 		
 	
 }
