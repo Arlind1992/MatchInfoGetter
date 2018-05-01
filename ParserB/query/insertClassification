@@ -1,0 +1,6 @@
+insert ignore into classification 
+(week,competitionId,competitionStage,teamId,goalsScored,goalsTaken,wins,draws
+,losses,points,type)
+ values ({week},'{competitionId}',
+ '{competitionStage}','{teamId}',{goalsScored},{goalsTaken},{wins}
+ ,{draws},{losses},{points},'{type}')

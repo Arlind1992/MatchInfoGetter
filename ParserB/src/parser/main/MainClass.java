@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 import org.w3c.dom.Element;
 
 import db.DbConnector;
+import db.base.Classification;
 import db.base.Coef;
 import db.base.Competition;
 import db.base.GameResults;
@@ -29,29 +31,17 @@ public class MainClass {
 	public static void main(String [ ] args) {
 		Element e=null;
 		try {
-			
+			//insertAllClassifications();
 			//String[] st=InfoFlashscoreGetter.getCompInfo("france", "ligue-1");
 			//System.out.println("id-"+ st[0]+" st- "+st[1]);
-			/*int day=-1;
+			int day=0;
 			//parse by day
 			Date d=getDate(day);
 			String toParse=InfoFlashscoreGetter.getAllGames(day);
 			insertGamesInDb(toParse,d);
 			System.out.println("Date : "+new SimpleDateFormat("yyyy-MM-dd").format(d) );
 			//parse by team
-			*/
-			Date d=null;//getDate(day);
-			List<Teams>all= DBInfoGetter.getAllTeams();
-			boolean con=false;
-			for(Teams t:all) {
-				if(t.getName().equals("crewe"))
-					con=true;
-				if(con) {
-					Thread.sleep(60000);
-					String toParse=InfoFlashscoreGetter.getInfoPerTeam( t.getFlashscore_team_id(),t.getName());
-					insertGamesInDb(toParse,d);
-				}
-			}
+			
 			//Teams team=new Teams("AC Milan");
 			//team.insertIntoDB();
 			/*QueryExecutor query=new QueryExecutor();
@@ -125,5 +115,43 @@ public class MainClass {
 			new Competition(champ,st[0],st[1]).insertTournamentIdAndStage();;
 		}
 	}
+	public static void insertAllClassifications() throws ClassNotFoundException, FileNotFoundException, SQLException {
+		List<String> types = new ArrayList<String>();
+		types.add("overall");
+		types.add("home");
+		types.add("away");
+		//System.out.println(InfoFlashscoreGetter.getClassifications("hn9DAGLG", "M5Lr4AbP"));
+		for(String t:types) {
+			for(Competition comp:DBInfoGetter.getAllCompetitions()) {
+				System.out.println(comp.getCompetition()+" "+t);
+				List<Classification> classList=ResultParser.getClassifications(InfoFlashscoreGetter.getClassifications(comp.getTournamentId(), comp.getTournamentStage(),t),comp.getTournamentId(),comp.getTournamentStage(),t);
+				System.out.println("Comp: "+comp.getCompetition());
+				for(Classification c:classList) {
+					System.out.println("ID "+c.getTeamId()+" D= "+c.getDraws()+" GS="+c.getGoalsScored()+" GT= "+c.getGoalsTaken()+
+							" P= "+c.getPoints()+" W= "+c.getWins()+" L= "+c.getLosses());
+					if(c.getPoints().length()>3)
+						c.setPoints(c.getPoints().substring(c.getPoints().indexOf(">")+1, c.getPoints().length()));
+					c.insertIntoDb();
+				}
+				
+			}
+		}
+	}
+	
+	public static void insertAllTeams() throws ClassNotFoundException, FileNotFoundException, SQLException, InterruptedException {
+		Date d=null;//getDate(day);
+		List<Teams>all= DBInfoGetter.getAllTeams();
+		boolean con=false;
+		for(Teams t:all) {
+			if(t.getName().equals("as-roma"))
+				con=true;
+			if(con) {
+				Thread.sleep(60000);
+				String toParse=InfoFlashscoreGetter.getInfoPerTeam( t.getFlashscore_team_id(),t.getName());
+				insertGamesInDb(toParse,d);
+			}
+		}
+	}
+	
 	
 }

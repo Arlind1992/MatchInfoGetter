@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import db.base.Competition;
 import db.base.Teams;
 import db.query.executor.QueryExecutor;
 
@@ -48,5 +49,26 @@ public class DBInfoGetter {
 		}
 		return championships;
 	}
+	public static List<Competition> getAllCompetitions(){
+		List<Competition> toReturn=new ArrayList<Competition>();
+		ResultSet comp=null;
+		try {
+			comp=QueryExecutor.excecuteQuery("getCompetitions", null);
+		} catch (ClassNotFoundException | FileNotFoundException | SQLException e) {
+			System.out.println("There was a problem with getting the competitions, e: "+e);
+		}
+		try {
+			while(comp.next()){
+				String cToAdd = comp.getString("competition");
+				String compId=comp.getString("tournamentId");
+				String tournamentStage=comp.getString("tournamentStage");
+				toReturn.add(new Competition(cToAdd,compId,tournamentStage));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return toReturn;
+	}
+	
 	
 }

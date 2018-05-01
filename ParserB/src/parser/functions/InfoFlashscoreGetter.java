@@ -134,4 +134,8 @@ public  class  InfoFlashscoreGetter {
 		return toReturn;		
 	}
 	
+	public static String getClassifications(String compId,String compStage,String type) {
+		return getInfoURI("https://d.flashscore.com/x/feed/ss_1_"+compId+"_"+compStage+"_table_"+type);
+	}
+	
 }

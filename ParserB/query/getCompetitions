@@ -1,1 +1,1 @@
-SELECT competition FROM competitions
+SELECT competition,tournamentId,tournamentStage FROM competitions

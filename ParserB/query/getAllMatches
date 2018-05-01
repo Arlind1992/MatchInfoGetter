@@ -1,0 +1,1 @@
+select flashscore_team_id, name,competition from teams order by flashscore_team_id
